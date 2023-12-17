@@ -21,12 +21,12 @@ COPY --chown=1001:0 \
 RUN features.sh
 
 COPY --chown=1001:0 \
-    target/realworld-liberty.war \
-    /config/apps
+    target/realworld-liberty/WEB-INF/lib/postgresql*.jar \
+    /config/jdbc/
 
 COPY --chown=1001:0 \
-    target/liberty/wlp/usr/shared/resources/*.jar \
-    /opt/ol/wlp/usr/shared/resources/
+    target/realworld-liberty.war \
+    /config/dropins
 
 USER 1001
 

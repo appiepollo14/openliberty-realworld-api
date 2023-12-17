@@ -15,6 +15,8 @@ import org.example.realworldapi.util.UserEntityUtils;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.microshed.testing.SharedContainerConfig;
+import org.microshed.testing.jupiter.MicroShedTest;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -22,6 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+@MicroShedTest
+@SharedContainerConfig(AppDeploymentConfig.class)
 @EnableAutoWeld
 public class AbstractIT extends DatabaseIT {
 

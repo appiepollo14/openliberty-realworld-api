@@ -29,7 +29,7 @@ public class BeanValidationExceptionMapper
                         });
 
         try {
-            return Response.ok(objectMapper.writeValueAsString(errorResponse)).status(Response.Status.CONFLICT).build();
+            return Response.ok(objectMapper.writeValueAsString(errorResponse)).status(422).build();
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);
         }

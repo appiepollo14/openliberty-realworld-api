@@ -92,7 +92,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -114,8 +114,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.microshed</groupId>
+            <artifactId>microshed-testing-core-jakarta</artifactId>
+            <version>0.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microshed</groupId>
+            <artifactId>microshed-testing-liberty</artifactId>
+            <version>0.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>testcontainers</artifactId>
             <version>1.19.1</version>
             <scope>test</scope>
         </dependency>
@@ -164,7 +176,7 @@
                 <configuration>
                     <copyDependencies>
                         <dependencyGroup>
-                            <location>${project.build.directory}/liberty/wlp/usr/shared/resources</location>
+                            <location>jdbc</location>
                             <dependency>
                                 <groupId>org.postgresql</groupId>
                                 <artifactId>postgresql</artifactId>

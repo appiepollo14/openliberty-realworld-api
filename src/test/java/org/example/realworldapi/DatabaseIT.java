@@ -12,7 +12,6 @@ import org.hibernate.service.ServiceRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.reflections.Reflections;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.util.HashSet;
@@ -20,7 +19,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Testcontainers
 public class DatabaseIT extends AppDeploymentConfig {
 
     public static EntityManagerFactory entityManagerFactory;
