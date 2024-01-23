@@ -15,9 +15,13 @@ the [RealWorld](https://github.com/gothinkster/realworld) repo.
 This codebase uses a PostgreSQL database to persist its data. Use the provided docker-compose.yaml to start the required
 DB.
 
-You will need Java as a prerequisite and our current build tool of choice is Maven.
+You will need JDK17 as a prerequisite and our current build tool of choice is Maven.
+
+IntegrationTests are ran with MicroShed, using Testcontainers. Make sure you've configured a docker environment
+according to this [reference](https://java.testcontainers.org/supported_docker_environment/)
 
 * Clone this repo
+* Run the provided `docker-compose.yaml` to have a working DB
 * To build, run `mvn clean install`
 * To start the server, run `mvn liberty:start`
 * To start the server as a foreground process, run `mvn liberty:run`
