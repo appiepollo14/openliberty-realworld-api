@@ -21,7 +21,5 @@ IntegrationTests are ran with MicroShed, using Testcontainers. Make sure you've 
 according to this [reference](https://java.testcontainers.org/supported_docker_environment/)
 
 * Clone this repo
-* Run the provided `docker-compose.yaml` to have a working DB
-* To build, run `mvn clean install`
-* To start the server, run `mvn liberty:start`
-* To start the server as a foreground process, run `mvn liberty:run`
+* Run the provided `docker-compose.yaml` to have a working PostgreSQL DB
+* Run `mvn liberty:dev` to start a development OpenLiberty server with live updates
