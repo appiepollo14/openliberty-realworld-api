@@ -1,4 +1,4 @@
-# ![RealWorld Example App](static/openliberty-realworld-logo.png)
+# ![RealWorld Example App](openliberty-realworld-logo.png)
 
 > ### OpenLiberty + JPA codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
