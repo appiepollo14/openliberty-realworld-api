@@ -26,7 +26,7 @@ COPY --chown=1001:0 \
 
 COPY --chown=1001:0 \
     target/realworld-liberty.war \
-    /config/apps
+    /config/dropins
 
 USER 1001
 
