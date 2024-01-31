@@ -7,7 +7,9 @@
         <description>JPA Unit for RealWorld containing Users</description>
         <jta-data-source>jdbc/RealWorldSource</jta-data-source>
         <properties>
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+<!--            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>-->
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both" />
         </properties>
     </persistence-unit>
 </persistence>
