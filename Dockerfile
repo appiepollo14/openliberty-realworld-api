@@ -1,4 +1,4 @@
-FROM openliberty/open-liberty:kernel-slim-java21-openj9-ubi-minimal
+FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9-ubi
 
 ARG VERSION=1.0
 ARG REVISION=SNAPSHOT
