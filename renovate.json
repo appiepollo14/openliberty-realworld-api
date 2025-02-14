@@ -16,7 +16,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [],
+      "fileMatch": ["^src/test/java/org/example/realworldapi/AppDeploymentConfig\\.java$"],
       "matchStrings": [
         "// renovate: datasource=(?<datasource>[^ ]+) depName=(?<depName>[^\n]+)\n\tstatic String postgresVersion = (?<currentValue>.*);\n"
       ]
