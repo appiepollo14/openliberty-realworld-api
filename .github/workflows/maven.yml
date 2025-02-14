@@ -15,7 +15,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn clean verify --file pom.xml
+        run: ./mvnw clean verify --file pom.xml
   k6-e2e-tests:
     services:
       postgres:
@@ -38,7 +38,7 @@ jobs:
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
       - name: Build runnable jar with Maven
-        run: mvn package liberty:create liberty:install-feature liberty:deploy liberty:package -Dinclude=minify,runnable -DskipTests
+        run: ./mvnw package liberty:create liberty:install-feature liberty:deploy liberty:package -Dinclude=minify,runnable -DskipTests
       - name: Run integration tests
         run: |
           nohup java -jar target/realworld-liberty.jar & sleep 20s
