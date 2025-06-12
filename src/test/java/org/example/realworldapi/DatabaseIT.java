@@ -27,7 +27,7 @@ public class DatabaseIT extends AppDeploymentConfig {
     private static Set<String> entities;
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         entities = new HashSet<>();
         dataSource = dataSource();
         entityManagerFactory = sessionFactory();
@@ -43,7 +43,7 @@ public class DatabaseIT extends AppDeploymentConfig {
                     new StandardServiceRegistryBuilder();
             standardServiceRegistryBuilder.applySettings(configuration.getProperties());
             serviceRegistry = standardServiceRegistryBuilder.build();
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            sessionFactory = configuration.buildSessionFactory();
         } catch (Exception ex) {
             ex.printStackTrace();
             StandardServiceRegistryBuilder.destroy(serviceRegistry);
@@ -60,9 +60,10 @@ public class DatabaseIT extends AppDeploymentConfig {
 
     private static Properties properties() {
         Properties properties = new Properties();
-        properties.put(Environment.DRIVER, "org.postgresql.Driver");
+        properties.put(Environment.JAKARTA_JDBC_DRIVER, "org.postgresql.Driver");
         properties.put(Environment.HBM2DDL_AUTO, "none");
-        properties.put(Environment.DATASOURCE, dataSource);
+        properties.put(Environment.JAKARTA_JTA_DATASOURCE, dataSource);
+        properties.put(Environment.JAKARTA_NON_JTA_DATASOURCE, dataSource);
         return properties;
     }
 
