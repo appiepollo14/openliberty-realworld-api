@@ -44,12 +44,18 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.6.17.Final</version>
+            <version>7.0.2.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>8.0.2.Final</version>
+            <version>9.0.0.Final</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.expressly/expressly -->
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.slugify</groupId>
