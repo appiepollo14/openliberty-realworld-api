@@ -13,8 +13,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateArticleRequestWrapper {
 
-    @Valid
-    @NotNull
-    private UpdateArticleRequest article;
-
+  @Valid @NotNull private UpdateArticleRequest article;
 }

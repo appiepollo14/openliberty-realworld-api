@@ -10,11 +10,10 @@ import org.example.realworldapi.domain.model.user.UserRepository;
 @Dependent
 public class FindUserByUsernameImpl implements FindUserByUsername {
 
-    @Inject
-    private UserRepository userRepository;
+  @Inject private UserRepository userRepository;
 
-    @Override
-    public User handle(String username) {
-        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-    }
+  @Override
+  public User handle(String username) {
+    return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+  }
 }

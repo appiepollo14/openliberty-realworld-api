@@ -13,24 +13,22 @@ import org.example.realworldapi.domain.model.user.UserRepository;
 @Singleton
 public class LoginUserImpl implements LoginUser {
 
-    @Inject
-    private UserRepository userRepository;
-    @Inject
-    private HashProvider hashProvider;
+  @Inject private UserRepository userRepository;
+  @Inject private HashProvider hashProvider;
 
-    @Override
-    public User handle(LoginUserInput loginUserInput) {
-        final var user =
-                userRepository
-                        .findByEmail(loginUserInput.getEmail())
-                        .orElseThrow(UserNotFoundException::new);
-        if (!isPasswordValid(loginUserInput.getPassword(), user.getPassword())) {
-            throw new InvalidPasswordException();
-        }
-        return user;
+  @Override
+  public User handle(LoginUserInput loginUserInput) {
+    final var user =
+        userRepository
+            .findByEmail(loginUserInput.getEmail())
+            .orElseThrow(UserNotFoundException::new);
+    if (!isPasswordValid(loginUserInput.getPassword(), user.getPassword())) {
+      throw new InvalidPasswordException();
     }
+    return user;
+  }
 
-    private boolean isPasswordValid(String password, String hashedPassword) {
-        return hashProvider.checkPassword(password, hashedPassword);
-    }
+  private boolean isPasswordValid(String password, String hashedPassword) {
+    return hashProvider.checkPassword(password, hashedPassword);
+  }
 }

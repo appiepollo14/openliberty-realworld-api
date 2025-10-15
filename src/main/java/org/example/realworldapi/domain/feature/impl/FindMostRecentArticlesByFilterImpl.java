@@ -11,11 +11,10 @@ import org.example.realworldapi.domain.model.article.PageResult;
 @Singleton
 public class FindMostRecentArticlesByFilterImpl implements FindMostRecentArticlesByFilter {
 
-    @Inject
-    private ArticleRepository articleRepository;
+  @Inject private ArticleRepository articleRepository;
 
-    @Override
-    public PageResult<Article> handle(ArticleFilter articleFilter) {
-        return articleRepository.findMostRecentArticlesByFilter(articleFilter);
-    }
+  @Override
+  public PageResult<Article> handle(ArticleFilter articleFilter) {
+    return articleRepository.findMostRecentArticlesByFilter(articleFilter);
+  }
 }

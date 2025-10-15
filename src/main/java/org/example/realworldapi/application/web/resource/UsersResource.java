@@ -26,43 +26,40 @@ import org.example.realworldapi.infrastructure.web.provider.TokenProvider;
 @Path("/users")
 public class UsersResource {
 
-    @Inject
-    private CreateUser createUser;
-    @Inject
-    private LoginUser loginUser;
-    @Inject
-    private TokenProvider tokenProvider;
-    @Inject
-    private ObjectMapper objectMapper;
+  @Inject private CreateUser createUser;
+  @Inject private LoginUser loginUser;
+  @Inject private TokenProvider tokenProvider;
+  @Inject private ObjectMapper objectMapper;
 
-    @POST
-    @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(
-            @Valid
-            NewUserRequestWrapper newUserRequest,
-            @Context SecurityException context) throws JsonProcessingException {
-        final var user = createUser.handle(newUserRequest.getUser().toCreateUserInput());
-        final var token = tokenProvider.createUserToken(user.getId().toString());
-        return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token))).status(Response.Status.CREATED).build();
+  @POST
+  @Transactional
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response create(
+      @Valid NewUserRequestWrapper newUserRequest, @Context SecurityException context)
+      throws JsonProcessingException {
+    final var user = createUser.handle(newUserRequest.getUser().toCreateUserInput());
+    final var token = tokenProvider.createUserToken(user.getId().toString());
+    return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token)))
+        .status(Response.Status.CREATED)
+        .build();
+  }
+
+  @POST
+  @Path("/login")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response login(@Valid LoginRequestWrapper loginRequest) throws JsonProcessingException {
+    User user;
+
+    try {
+      user = loginUser.handle(loginRequest.getUser().toLoginUserInput());
+    } catch (UserNotFoundException | InvalidPasswordException ex) {
+      throw new UnauthorizedException();
     }
-
-    @POST
-    @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(
-            @Valid
-            LoginRequestWrapper loginRequest) throws JsonProcessingException {
-        User user;
-
-        try {
-            user = loginUser.handle(loginRequest.getUser().toLoginUserInput());
-        } catch (UserNotFoundException | InvalidPasswordException ex) {
-            throw new UnauthorizedException();
-        }
-        final var token = tokenProvider.createUserToken(user.getId().toString());
-        return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token))).status(Response.Status.OK).build();
-    }
+    final var token = tokenProvider.createUserToken(user.getId().toString());
+    return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token)))
+        .status(Response.Status.OK)
+        .build();
+  }
 }

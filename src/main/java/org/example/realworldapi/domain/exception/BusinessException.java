@@ -1,11 +1,10 @@
 package org.example.realworldapi.domain.exception;
 
-import lombok.Data;
+import static java.util.Collections.singletonList;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Collections.singletonList;
+import lombok.Data;
 
 @Data
 public class BusinessException extends RuntimeException {

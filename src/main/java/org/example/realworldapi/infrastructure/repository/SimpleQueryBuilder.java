@@ -5,37 +5,37 @@ import java.util.List;
 
 public class SimpleQueryBuilder {
 
-    private List<String> queryStatements;
-    private List<String> whereStatements;
+  private final List<String> queryStatements;
+  private final List<String> whereStatements;
 
-    public SimpleQueryBuilder() {
-        this.queryStatements = new LinkedList<>();
-        this.whereStatements = new LinkedList<>();
-    }
+  public SimpleQueryBuilder() {
+    this.queryStatements = new LinkedList<>();
+    this.whereStatements = new LinkedList<>();
+  }
 
-    public void addQueryStatement(String queryStatement) {
-        this.queryStatements.add(queryStatement);
-    }
+  public void addQueryStatement(String queryStatement) {
+    this.queryStatements.add(queryStatement);
+  }
 
-    public void updateQueryStatementConditional(
-            boolean updateCondition,
-            String queryStatement,
-            String whereStatement,
-            Runnable afterAddStatements) {
-        if (updateCondition) {
-            queryStatements.add(queryStatement);
-            whereStatements.add(whereStatement);
-            afterAddStatements.run();
-        }
+  public void updateQueryStatementConditional(
+      boolean updateCondition,
+      String queryStatement,
+      String whereStatement,
+      Runnable afterAddStatements) {
+    if (updateCondition) {
+      queryStatements.add(queryStatement);
+      whereStatements.add(whereStatement);
+      afterAddStatements.run();
     }
+  }
 
-    public String toQueryString() {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(String.join(" ", queryStatements));
-        if (!whereStatements.isEmpty()) {
-            queryBuilder.append(" where ");
-            queryBuilder.append(String.join(" and ", whereStatements));
-        }
-        return queryBuilder.toString();
+  public String toQueryString() {
+    StringBuilder queryBuilder = new StringBuilder();
+    queryBuilder.append(String.join(" ", queryStatements));
+    if (!whereStatements.isEmpty()) {
+      queryBuilder.append(" where ");
+      queryBuilder.append(String.join(" and ", whereStatements));
     }
+    return queryBuilder.toString();
+  }
 }

@@ -12,6 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NewCommentRequestWrapper {
 
-    @Valid
-    private NewCommentRequest comment;
+  @Valid private NewCommentRequest comment;
 }

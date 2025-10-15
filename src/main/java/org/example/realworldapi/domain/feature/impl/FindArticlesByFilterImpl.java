@@ -11,11 +11,10 @@ import org.example.realworldapi.domain.model.article.PageResult;
 @Singleton
 public class FindArticlesByFilterImpl implements FindArticlesByFilter {
 
-    @Inject
-    private ArticleRepository articleRepository;
+  @Inject private ArticleRepository articleRepository;
 
-    @Override
-    public PageResult<Article> handle(ArticleFilter articleFilter) {
-        return articleRepository.findArticlesByFilter(articleFilter);
-    }
+  @Override
+  public PageResult<Article> handle(ArticleFilter articleFilter) {
+    return articleRepository.findArticlesByFilter(articleFilter);
+  }
 }

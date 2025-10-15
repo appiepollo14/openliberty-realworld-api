@@ -11,27 +11,26 @@ import org.example.realworldapi.application.web.model.response.ErrorResponse;
 
 @Provider
 public class BeanValidationExceptionMapper
-        implements ExceptionMapper<ConstraintViolationException> {
+    implements ExceptionMapper<ConstraintViolationException> {
 
-    @Inject
-    ObjectMapper objectMapper;
+  @Inject ObjectMapper objectMapper;
 
-    @Override
-    public Response toResponse(ConstraintViolationException e) {
+  @Override
+  public Response toResponse(ConstraintViolationException e) {
 
-        ErrorResponse errorResponse = new ErrorResponse();
+    ErrorResponse errorResponse = new ErrorResponse();
 
-        e.getConstraintViolations()
-                .iterator()
-                .forEachRemaining(
-                        contraint -> {
-                            errorResponse.getBody().add(contraint.getMessage());
-                        });
+    e.getConstraintViolations()
+        .iterator()
+        .forEachRemaining(
+            contraint -> {
+              errorResponse.getBody().add(contraint.getMessage());
+            });
 
-        try {
-            return Response.ok(objectMapper.writeValueAsString(errorResponse)).status(422).build();
-        } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
-        }
+    try {
+      return Response.ok(objectMapper.writeValueAsString(errorResponse)).status(422).build();
+    } catch (JsonProcessingException ex) {
+      throw new RuntimeException(ex);
     }
+  }
 }

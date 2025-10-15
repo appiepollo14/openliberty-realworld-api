@@ -13,21 +13,17 @@ import org.example.realworldapi.domain.model.comment.NewCommentInput;
 @Singleton
 public class CreateCommentImpl implements CreateComment {
 
-    @Inject
-    private CommentRepository commentRepository;
-    @Inject
-    private FindUserById findUserById;
-    @Inject
-    private FindArticleBySlug findArticleBySlug;
-    @Inject
-    private CommentBuilder commentBuilder;
+  @Inject private CommentRepository commentRepository;
+  @Inject private FindUserById findUserById;
+  @Inject private FindArticleBySlug findArticleBySlug;
+  @Inject private CommentBuilder commentBuilder;
 
-    @Override
-    public Comment handle(NewCommentInput newCommentInput) {
-        final var author = findUserById.handle(newCommentInput.getAuthorId());
-        final var article = findArticleBySlug.handle(newCommentInput.getArticleSlug());
-        final var comment = commentBuilder.build(author, article, newCommentInput.getBody());
-        commentRepository.save(comment);
-        return comment;
-    }
+  @Override
+  public Comment handle(NewCommentInput newCommentInput) {
+    final var author = findUserById.handle(newCommentInput.getAuthorId());
+    final var article = findArticleBySlug.handle(newCommentInput.getArticleSlug());
+    final var comment = commentBuilder.build(author, article, newCommentInput.getBody());
+    commentRepository.save(comment);
+    return comment;
+  }
 }
