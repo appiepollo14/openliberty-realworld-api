@@ -20,57 +20,60 @@ import org.example.realworldapi.infrastructure.web.security.profile.Role;
 @Path("/profiles")
 public class ProfilesResource {
 
-    @Inject
-    private FollowUserByUsername followUserByUsername;
-    @Inject
-    private UnfollowUserByUsername unfollowUserByUsername;
-    @Inject
-    private ResourceUtils resourceUtils;
-    @Inject
-    private ObjectMapper objectMapper;
+  @Inject private FollowUserByUsername followUserByUsername;
+  @Inject private UnfollowUserByUsername unfollowUserByUsername;
+  @Inject private ResourceUtils resourceUtils;
+  @Inject private ObjectMapper objectMapper;
 
-    @GET
-    @Secured(optional = true)
-    @Path("/{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProfile(
-            @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
-            String username,
-            @Context SecurityContext securityContext) throws JsonProcessingException {
-        final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
-        final var profileResponse = resourceUtils.profileResponse(username, loggedUserId);
-        return Response.ok(objectMapper.writeValueAsString(profileResponse)).status(Response.Status.OK).build();
-    }
+  @GET
+  @Secured(optional = true)
+  @Path("/{username}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getProfile(
+      @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
+          String username,
+      @Context SecurityContext securityContext)
+      throws JsonProcessingException {
+    final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
+    final var profileResponse = resourceUtils.profileResponse(username, loggedUserId);
+    return Response.ok(objectMapper.writeValueAsString(profileResponse))
+        .status(Response.Status.OK)
+        .build();
+  }
 
-    @POST
-    @Transactional
-    @Secured({Role.USER, Role.ADMIN})
-    @Path("/{username}/follow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response follow(
-            @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
-            String username,
-            @Context SecurityContext securityContext) throws JsonProcessingException {
-        final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
-        followUserByUsername.handle(loggedUserId, username);
-        return Response.ok(objectMapper.writeValueAsString(resourceUtils.profileResponse(username, loggedUserId)))
-                .status(Response.Status.OK)
-                .build();
-    }
+  @POST
+  @Transactional
+  @Secured({Role.USER, Role.ADMIN})
+  @Path("/{username}/follow")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response follow(
+      @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
+          String username,
+      @Context SecurityContext securityContext)
+      throws JsonProcessingException {
+    final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
+    followUserByUsername.handle(loggedUserId, username);
+    return Response.ok(
+            objectMapper.writeValueAsString(resourceUtils.profileResponse(username, loggedUserId)))
+        .status(Response.Status.OK)
+        .build();
+  }
 
-    @DELETE
-    @Transactional
-    @Secured({Role.USER, Role.ADMIN})
-    @Path("/{username}/follow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response unfollow(
-            @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
-            String username,
-            @Context SecurityContext securityContext) throws JsonProcessingException {
-        final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
-        unfollowUserByUsername.handle(loggedUserId, username);
-        return Response.ok(objectMapper.writeValueAsString(resourceUtils.profileResponse(username, loggedUserId)))
-                .status(Response.Status.OK)
-                .build();
-    }
+  @DELETE
+  @Transactional
+  @Secured({Role.USER, Role.ADMIN})
+  @Path("/{username}/follow")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response unfollow(
+      @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
+          String username,
+      @Context SecurityContext securityContext)
+      throws JsonProcessingException {
+    final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
+    unfollowUserByUsername.handle(loggedUserId, username);
+    return Response.ok(
+            objectMapper.writeValueAsString(resourceUtils.profileResponse(username, loggedUserId)))
+        .status(Response.Status.OK)
+        .build();
+  }
 }

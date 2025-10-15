@@ -10,11 +10,10 @@ import org.example.realworldapi.domain.model.article.ArticleRepository;
 @Singleton
 public class FindArticleBySlugImpl implements FindArticleBySlug {
 
-    @Inject
-    private ArticleRepository articleRepository;
+  @Inject private ArticleRepository articleRepository;
 
-    @Override
-    public Article handle(String slug) {
-        return articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
-    }
+  @Override
+  public Article handle(String slug) {
+    return articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+  }
 }

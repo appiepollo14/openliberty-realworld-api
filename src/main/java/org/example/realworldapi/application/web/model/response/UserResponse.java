@@ -12,17 +12,17 @@ import org.example.realworldapi.domain.model.user.User;
 @JsonRootName("user")
 public class UserResponse {
 
-    private String username;
-    private String bio;
-    private String image;
-    private String email;
-    private String token;
+  private String username;
+  private String bio;
+  private String image;
+  private String email;
+  private String token;
 
-    public UserResponse(User user, String token) {
-        this.username = user.getUsername();
-        this.bio = user.getBio();
-        this.image = user.getImage();
-        this.email = user.getEmail();
-        this.token = token;
-    }
+  public UserResponse(User user, String token) {
+    this.username = user.getUsername();
+    this.bio = user.getBio();
+    this.image = user.getImage();
+    this.email = user.getEmail();
+    this.token = token;
+  }
 }

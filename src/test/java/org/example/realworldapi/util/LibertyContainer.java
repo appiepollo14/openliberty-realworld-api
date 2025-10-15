@@ -6,17 +6,15 @@ import org.testcontainers.images.builder.ImageFromDockerfile;
 
 public class LibertyContainer extends GenericContainer<LibertyContainer> {
 
-    public LibertyContainer(ImageFromDockerfile image, int httpPort, int httpsPort) {
+  public LibertyContainer(ImageFromDockerfile image, int httpPort, int httpsPort) {
 
-        super(image);
-        addExposedPorts(httpPort, httpsPort);
+    super(image);
+    addExposedPorts(httpPort, httpsPort);
 
-        waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1));
+    waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1));
+  }
 
-    }
-
-    public String getBaseURL() throws IllegalStateException {
-        return "http://" + getHost() + ":" + getFirstMappedPort();
-    }
-
+  public String getBaseURL() throws IllegalStateException {
+    return "http://" + getHost() + ":" + getFirstMappedPort();
+  }
 }

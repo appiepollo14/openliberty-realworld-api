@@ -8,81 +8,80 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.example.realworldapi.infrastructure.web.provider.TokenProvider;
 import org.example.realworldapi.infrastructure.web.security.profile.Role;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
-
 @ApplicationScoped
 public class JwtTokenProvider implements TokenProvider {
 
-    private final String COMPLEMENTARY_SUBSCRIPTION = "complementary-subscription";
-    private final String CLAIM_ROLES = "ROLES";
-    private Algorithm algorithm;
-    private JWTVerifier jwtVerifier;
-    private String issuer;
-    private Integer expirationTimeInMinutes;
+  private final String COMPLEMENTARY_SUBSCRIPTION = "complementary-subscription";
+  private final String CLAIM_ROLES = "ROLES";
+  private final Algorithm algorithm;
+  private final JWTVerifier jwtVerifier;
+  private final String issuer;
+  private final Integer expirationTimeInMinutes;
 
-    @Inject
-    public JwtTokenProvider(
-            @ConfigProperty(name = "jwt.issuer") String issuer,
-            @ConfigProperty(name = "jwt.secret") String secret,
-            @ConfigProperty(name = "jwt.expiration.time.minutes") Integer expirationTimeInMinutes) {
+  @Inject
+  public JwtTokenProvider(
+      @ConfigProperty(name = "jwt.issuer") String issuer,
+      @ConfigProperty(name = "jwt.secret") String secret,
+      @ConfigProperty(name = "jwt.expiration.time.minutes") Integer expirationTimeInMinutes) {
 
-        this.issuer = issuer;
-        this.algorithm = Algorithm.HMAC512(secret);
-        this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
-        this.expirationTimeInMinutes = expirationTimeInMinutes;
+    this.issuer = issuer;
+    this.algorithm = Algorithm.HMAC512(secret);
+    this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
+    this.expirationTimeInMinutes = expirationTimeInMinutes;
+  }
+
+  @Override
+  public String createUserToken(String subject) {
+    JWTCreator.Builder builder;
+
+    builder =
+        JWT.create()
+            .withIssuer(issuer)
+            .withSubject(subject)
+            .withIssuedAt(new Date())
+            .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString());
+
+    builder.withArrayClaim(CLAIM_ROLES, toArrayNames(Role.USER));
+
+    if (expirationTimeInMinutes != null) {
+      builder.withExpiresAt(plusMinutes(expirationTimeInMinutes));
     }
 
-    @Override
-    public String createUserToken(String subject) {
-        JWTCreator.Builder builder;
+    return builder.sign(algorithm);
+  }
 
-        builder =
-                JWT.create()
-                        .withIssuer(issuer)
-                        .withSubject(subject)
-                        .withIssuedAt(new Date())
-                        .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString());
+  @Override
+  public DecodedJWT verify(String token) {
+    return jwtVerifier.verify(token);
+  }
 
-        builder.withArrayClaim(CLAIM_ROLES, toArrayNames(Role.USER));
+  @Override
+  public Role[] extractRoles(DecodedJWT decodedJWT) {
+    Claim claim = decodedJWT.getClaim(CLAIM_ROLES);
+    return claim.asArray(Role.class);
+  }
 
-        if (expirationTimeInMinutes != null) {
-            builder.withExpiresAt(plusMinutes(expirationTimeInMinutes));
-        }
+  private static String[] toArrayNames(Role... allowedRoles) {
 
-        return builder.sign(algorithm);
+    String[] names = new String[allowedRoles.length];
+
+    for (int nameIndex = 0; nameIndex < allowedRoles.length; nameIndex++) {
+      names[nameIndex] = allowedRoles[nameIndex].name();
     }
 
-    @Override
-    public DecodedJWT verify(String token) {
-        return jwtVerifier.verify(token);
-    }
+    return names;
+  }
 
-    @Override
-    public Role[] extractRoles(DecodedJWT decodedJWT) {
-        Claim claim = decodedJWT.getClaim(CLAIM_ROLES);
-        return claim.asArray(Role.class);
-    }
-
-    private static String[] toArrayNames(Role... allowedRoles) {
-
-        String[] names = new String[allowedRoles.length];
-
-        for (int nameIndex = 0; nameIndex < allowedRoles.length; nameIndex++) {
-            names[nameIndex] = allowedRoles[nameIndex].name();
-        }
-
-        return names;
-    }
-
-    private static Date plusMinutes(int minutes) {
-        int oneMinuteInMillis = 60000;
-        Calendar calendar = Calendar.getInstance();
-        return new Date(calendar.getTimeInMillis() + (minutes * oneMinuteInMillis));
-    }
+  private static Date plusMinutes(int minutes) {
+    int oneMinuteInMillis = 60000;
+    Calendar calendar = Calendar.getInstance();
+    return new Date(calendar.getTimeInMillis() + ((long) minutes * oneMinuteInMillis));
+  }
 }

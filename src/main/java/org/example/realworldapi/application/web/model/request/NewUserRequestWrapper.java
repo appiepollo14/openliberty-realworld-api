@@ -14,8 +14,7 @@ import org.example.realworldapi.domain.model.constants.ValidationMessages;
 @NoArgsConstructor
 public class NewUserRequestWrapper {
 
-    @Valid
-    @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
-    private NewUserRequest user;
-
+  @Valid
+  @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
+  private NewUserRequest user;
 }

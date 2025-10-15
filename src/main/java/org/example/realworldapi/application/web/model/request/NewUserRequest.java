@@ -10,11 +10,11 @@ import org.example.realworldapi.domain.model.user.CreateUserInput;
 @Setter
 @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
 public class NewUserRequest {
-    private String username;
-    private String email;
-    private String password;
+  private String username;
+  private String email;
+  private String password;
 
-    public CreateUserInput toCreateUserInput() {
-        return new CreateUserInput(this.username, this.email, this.password);
-    }
+  public CreateUserInput toCreateUserInput() {
+    return new CreateUserInput(this.username, this.email, this.password);
+  }
 }

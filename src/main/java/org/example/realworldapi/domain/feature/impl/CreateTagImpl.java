@@ -10,15 +10,13 @@ import org.example.realworldapi.domain.model.tag.TagRepository;
 @Singleton
 public class CreateTagImpl implements CreateTag {
 
-    @Inject
-    private TagRepository tagRepository;
-    @Inject
-    private TagBuilder tagBuilder;
+  @Inject private TagRepository tagRepository;
+  @Inject private TagBuilder tagBuilder;
 
-    @Override
-    public Tag handle(String name) {
-        final var tag = tagBuilder.build(name);
-        tagRepository.save(tag);
-        return tag;
-    }
+  @Override
+  public Tag handle(String name) {
+    final var tag = tagBuilder.build(name);
+    tagRepository.save(tag);
+    return tag;
+  }
 }

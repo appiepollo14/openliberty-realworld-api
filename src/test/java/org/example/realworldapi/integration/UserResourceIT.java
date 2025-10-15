@@ -1,6 +1,11 @@
 package org.example.realworldapi.integration;
 
+import static io.restassured.RestAssured.given;
+import static org.example.realworldapi.constants.TestConstants.*;
+import static org.hamcrest.Matchers.*;
+
 import jakarta.ws.rs.core.MediaType;
+import java.util.UUID;
 import org.apache.http.HttpStatus;
 import org.example.realworldapi.AbstractIT;
 import org.example.realworldapi.application.web.model.request.UpdateUserRequest;
@@ -9,251 +14,252 @@ import org.example.realworldapi.util.UserEntityUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
-import static org.example.realworldapi.constants.TestConstants.*;
-import static org.hamcrest.Matchers.*;
-
 public class UserResourceIT extends AbstractIT {
 
-    private final String USER_RESOURCE_PATH = API_PREFIX + "/user";
+  private final String USER_RESOURCE_PATH = API_PREFIX + "/user";
 
-    @Test
-    public void givenAValidToken_whenExecuteGetUserEndpoint_shouldReturnLoggedInUser() {
+  @Test
+  public void givenAValidToken_whenExecuteGetUserEndpoint_shouldReturnLoggedInUser() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        given()
-                .header(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER_VALUE_PREFIX + token(user))
-                .contentType(MediaType.APPLICATION_JSON)
-                .get(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body(
-                        "user.id",
-                        Matchers.nullValue(),
-                        "user.password",
-                        Matchers.nullValue(),
-                        "user.username",
-                        Matchers.notNullValue(),
-                        "user.email",
-                        Matchers.notNullValue(),
-                        "user.token",
-                        Matchers.notNullValue(),
-                        "user.bio",
-                        is(user.getBio()),
-                        "user.image",
-                        is(user.getImage()));
-    }
+    given()
+        .header(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER_VALUE_PREFIX + token(user))
+        .contentType(MediaType.APPLICATION_JSON)
+        .get(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .body(
+            "user.id",
+            Matchers.nullValue(),
+            "user.password",
+            Matchers.nullValue(),
+            "user.username",
+            Matchers.notNullValue(),
+            "user.email",
+            Matchers.notNullValue(),
+            "user.token",
+            Matchers.notNullValue(),
+            "user.bio",
+            is(user.getBio()),
+            "user.image",
+            is(user.getImage()));
+  }
 
-    @Test
-    public void givenAInexistentUser_whenExecuteGetUserEndpoint_shouldReturn404NotFound() {
+  @Test
+  public void givenAInexistentUser_whenExecuteGetUserEndpoint_shouldReturn404NotFound() {
 
-        String authorizationHeader =
-                AUTHORIZATION_HEADER_VALUE_PREFIX
-                        + tokenProvider.createUserToken(
-                        UUID.fromString("8848fc9e-38d7-4bed-95a5-90d5b8c752e7").toString());
+    String authorizationHeader =
+        AUTHORIZATION_HEADER_VALUE_PREFIX
+            + tokenProvider.createUserToken(
+                UUID.fromString("8848fc9e-38d7-4bed-95a5-90d5b8c752e7").toString());
 
-        given()
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .contentType(MediaType.APPLICATION_JSON)
-                .get(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body("errors.body", hasItems("user not found"));
-    }
+    given()
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .contentType(MediaType.APPLICATION_JSON)
+        .get(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_NOT_FOUND)
+        .body("errors.body", hasItems("user not found"));
+  }
 
-    @Test
-    public void
-    givenARequestWithoutAuthorizationHeader_whenExecuteGetUserEndpoint_shouldReturnUnauthorized() {
+  @Test
+  public void
+      givenARequestWithoutAuthorizationHeader_whenExecuteGetUserEndpoint_shouldReturnUnauthorized() {
 
-        final var user = UserEntityUtils.create("user1", "user1@mail.com", "123");
+    final var user = UserEntityUtils.create("user1", "user1@mail.com", "123");
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(user)
-                .get(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .body("errors.body", hasItems("Unauthorized"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(user)
+        .get(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_UNAUTHORIZED)
+        .body("errors.body", hasItems("Unauthorized"));
+  }
 
-    @Test
-    public void givenAExistentUser_whenExecuteUpdateUserEndpoint_shouldReturnUpdatedUser() {
+  @Test
+  public void givenAExistentUser_whenExecuteUpdateUserEndpoint_shouldReturnUpdatedUser() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setUsername("user2");
-        updateUserRequest.setEmail(user.getEmail());
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setUsername("user2");
+    updateUserRequest.setEmail(user.getEmail());
 
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body(
-                        "user.id",
-                        Matchers.nullValue(),
-                        "user.password",
-                        Matchers.nullValue(),
-                        "user.username",
-                        is(updateUserRequest.getUsername()),
-                        "user.email",
-                        Matchers.notNullValue(),
-                        "user.token",
-                        Matchers.notNullValue(),
-                        "user.bio",
-                        is(user.getBio()),
-                        "user.image",
-                        is(user.getImage()));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .body(
+            "user.id",
+            Matchers.nullValue(),
+            "user.password",
+            Matchers.nullValue(),
+            "user.username",
+            is(updateUserRequest.getUsername()),
+            "user.email",
+            Matchers.notNullValue(),
+            "user.token",
+            Matchers.notNullValue(),
+            "user.bio",
+            is(user.getBio()),
+            "user.image",
+            is(user.getImage()));
+  }
 
-    @Test
-    public void givenAExistentUser_whenExecuteUpdateUserEndpointWithEmptyBody_shouldReturn422() {
+  @Test
+  public void givenAExistentUser_whenExecuteUpdateUserEndpointWithEmptyBody_shouldReturn422() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
-                .body("errors.body", hasItems("At least one field must be not null"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+        .body("errors.body", hasItems("At least one field must be not null"));
+  }
 
-    @Test
-    public void givenAnotherExistingUsername_whenExecuteUpdateUserEndpoint_shouldReturn409() {
+  @Test
+  public void givenAnotherExistingUsername_whenExecuteUpdateUserEndpoint_shouldReturn409() {
 
-        final var otherUser = createUserEntity("user", "user@mail.com", "bio", "image", "123");
+    final var otherUser = createUserEntity("user", "user@mail.com", "bio", "image", "123");
 
-        final var currentUser =
-                createUserEntity("currentUser", "current@mail.com", "bio", "image", "123");
+    final var currentUser =
+        createUserEntity("currentUser", "current@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(currentUser);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(currentUser);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setUsername(otherUser.getUsername());
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setUsername(otherUser.getUsername());
 
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_CONFLICT)
-                .body("errors.body", hasItems("username already exists"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_CONFLICT)
+        .body("errors.body", hasItems("username already exists"));
+  }
 
-    @Test
-    public void givenAnotherExistingEmail_whenExecuteUpdateUserEndpoint_shouldReturn409() {
+  @Test
+  public void givenAnotherExistingEmail_whenExecuteUpdateUserEndpoint_shouldReturn409() {
 
-        final var otherUser = createUserEntity("user", "user@mail.com", "bio", "image", "123");
+    final var otherUser = createUserEntity("user", "user@mail.com", "bio", "image", "123");
 
-        final var currentUser =
-                createUserEntity("currentUser", "current@mail.com", "bio", "image", "123");
+    final var currentUser =
+        createUserEntity("currentUser", "current@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(currentUser);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(currentUser);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setEmail(otherUser.getEmail());
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setEmail(otherUser.getEmail());
 
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_CONFLICT)
-                .body("errors.body", hasItems("email already exists"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_CONFLICT)
+        .body("errors.body", hasItems("email already exists"));
+  }
 
-    @Test
-    public void givenAExistentUser_whenExecuteUpdateUserEndpointWithEmptyUsername_shouldReturn422() {
+  @Test
+  public void givenAExistentUser_whenExecuteUpdateUserEndpointWithEmptyUsername_shouldReturn422() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setUsername("");
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setUsername("");
 
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
-                .body("errors.body", hasItems("username must be not blank"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+        .body("errors.body", hasItems("username must be not blank"));
+  }
 
-    @Test
-//    @DefaultLocale(language = "en")
-    public void givenAExistentUser_whenExecuteUpdateUserEndpointWithInvalidEmail_shouldReturn422() {
+  @Test
+  //    @DefaultLocale(language = "en")
+  public void givenAExistentUser_whenExecuteUpdateUserEndpointWithInvalidEmail_shouldReturn422() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setEmail("email");
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setEmail("email");
 
-        UpdateUserRequestWrapper updateArticleRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateArticleRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateArticleRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
-                .body(
-                        "errors.body",
-                        hasSize(1),
-                        "errors.body",
-                        hasItems("must be a well-formed email address"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateArticleRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+        .body(
+            "errors.body",
+            hasSize(1),
+            "errors.body",
+            hasItems("must be a well-formed email address"));
+  }
 
-    @Test
-    public void givenAExistentUser_whenExecuteUpdateUserEndpointWithBlankUsername_shouldReturn422() {
+  @Test
+  public void givenAExistentUser_whenExecuteUpdateUserEndpointWithBlankUsername_shouldReturn422() {
 
-        final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
+    final var user = createUserEntity("user1", "user1@mail.com", "bio", "image", "123");
 
-        String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
+    String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + token(user);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setUsername(" ");
+    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+    updateUserRequest.setUsername(" ");
 
-        UpdateUserRequestWrapper updateUserRequestWrapper = new UpdateUserRequestWrapper(updateUserRequest);
+    UpdateUserRequestWrapper updateUserRequestWrapper =
+        new UpdateUserRequestWrapper(updateUserRequest);
 
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, authorizationHeader)
-                .body(updateUserRequestWrapper)
-                .put(USER_RESOURCE_PATH)
-                .then()
-                .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
-                .body("errors.body", hasItems("username must be not blank"));
-    }
+    given()
+        .contentType(MediaType.APPLICATION_JSON)
+        .header(AUTHORIZATION_HEADER, authorizationHeader)
+        .body(updateUserRequestWrapper)
+        .put(USER_RESOURCE_PATH)
+        .then()
+        .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+        .body("errors.body", hasItems("username must be not blank"));
+  }
 }

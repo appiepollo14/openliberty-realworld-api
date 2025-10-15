@@ -17,64 +17,63 @@ import org.example.realworldapi.domain.model.user.UserModelBuilder;
 @ApplicationScoped
 public class EntityUtils {
 
-    @Inject
-    @Named("usermodelbuilder")
-    private UserModelBuilder userBuilder;
-    @Inject
-    private TagBuilder tagBuilder;
-    @Inject
-    private ArticleModelBuilder articleBuilder;
-    @Inject
-    private CommentBuilder commentBuilder;
+  @Inject
+  @Named("usermodelbuilder")
+  private UserModelBuilder userBuilder;
 
-    public User user(UserEntity userEntity) {
-        final var id = userEntity.getId();
-        final var username = userEntity.getUsername();
-        final var bio = userEntity.getBio();
-        final var image = userEntity.getImage();
-        final var password = userEntity.getPassword();
-        final var email = userEntity.getEmail();
-        return userBuilder.build(id, username, bio, image, password, email);
-    }
+  @Inject private TagBuilder tagBuilder;
+  @Inject private ArticleModelBuilder articleBuilder;
+  @Inject private CommentBuilder commentBuilder;
 
-    public Tag tag(TagEntity tagEntity) {
-        return tagBuilder.build(tagEntity.getId(), tagEntity.getName());
-    }
+  public User user(UserEntity userEntity) {
+    final var id = userEntity.getId();
+    final var username = userEntity.getUsername();
+    final var bio = userEntity.getBio();
+    final var image = userEntity.getImage();
+    final var password = userEntity.getPassword();
+    final var email = userEntity.getEmail();
+    return userBuilder.build(id, username, bio, image, password, email);
+  }
 
-    public Tag tag(TagRelationshipEntity tagRelationshipEntity) {
-        return tag(tagRelationshipEntity.getTag());
-    }
+  public Tag tag(TagEntity tagEntity) {
+    return tagBuilder.build(tagEntity.getId(), tagEntity.getName());
+  }
 
-    public TagRelationship tagRelationship(TagRelationshipEntity tagRelationshipEntity) {
-        return new TagRelationship(article(tagRelationshipEntity.getArticle()), tag(tagRelationshipEntity.getTag()));
-    }
+  public Tag tag(TagRelationshipEntity tagRelationshipEntity) {
+    return tag(tagRelationshipEntity.getTag());
+  }
 
-    public Article article(ArticleEntity articleEntity) {
-        return articleBuilder.build(
-                articleEntity.getId(),
-                articleEntity.getSlug(),
-                articleEntity.getTitle(),
-                articleEntity.getDescription(),
-                articleEntity.getBody(),
-                articleEntity.getCreatedAt(),
-                articleEntity.getUpdatedAt(),
-                user(articleEntity.getAuthor()));
-    }
+  public TagRelationship tagRelationship(TagRelationshipEntity tagRelationshipEntity) {
+    return new TagRelationship(
+        article(tagRelationshipEntity.getArticle()), tag(tagRelationshipEntity.getTag()));
+  }
 
-    public Comment comment(CommentEntity commentEntity) {
-        return commentBuilder.build(
-                commentEntity.getId(),
-                user(commentEntity.getAuthor()),
-                article(commentEntity.getArticle()),
-                commentEntity.getBody(),
-                commentEntity.getCreatedAt(),
-                commentEntity.getUpdatedAt());
-    }
+  public Article article(ArticleEntity articleEntity) {
+    return articleBuilder.build(
+        articleEntity.getId(),
+        articleEntity.getSlug(),
+        articleEntity.getTitle(),
+        articleEntity.getDescription(),
+        articleEntity.getBody(),
+        articleEntity.getCreatedAt(),
+        articleEntity.getUpdatedAt(),
+        user(articleEntity.getAuthor()));
+  }
 
-    public FavoriteRelationship favoriteRelationship(
-            FavoriteRelationshipEntity favoriteRelationshipEntity) {
-        return new FavoriteRelationship(
-                user(favoriteRelationshipEntity.getUser()),
-                article(favoriteRelationshipEntity.getArticle()));
-    }
+  public Comment comment(CommentEntity commentEntity) {
+    return commentBuilder.build(
+        commentEntity.getId(),
+        user(commentEntity.getAuthor()),
+        article(commentEntity.getArticle()),
+        commentEntity.getBody(),
+        commentEntity.getCreatedAt(),
+        commentEntity.getUpdatedAt());
+  }
+
+  public FavoriteRelationship favoriteRelationship(
+      FavoriteRelationshipEntity favoriteRelationshipEntity) {
+    return new FavoriteRelationship(
+        user(favoriteRelationshipEntity.getUser()),
+        article(favoriteRelationshipEntity.getArticle()));
+  }
 }
