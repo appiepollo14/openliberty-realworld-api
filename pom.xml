@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>7.2.0.Final</version>
+            <version>7.2.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.8</version>
+            <version>42.7.9</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -208,7 +208,7 @@
                             <dependency>
                                 <groupId>org.postgresql</groupId>
                                 <artifactId>postgresql</artifactId>
-                                <version>42.7.8</version>
+                                <version>42.7.9</version>
                             </dependency>
                         </dependencyGroup>
                     </copyDependencies>
