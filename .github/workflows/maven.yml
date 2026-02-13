@@ -20,7 +20,7 @@ jobs:
   k6-e2e-tests:
     services:
       postgres:
-        image: postgres:18.1-alpine
+        image: postgres:18.2-alpine
         ports:
           - 5432:5432
         env:
