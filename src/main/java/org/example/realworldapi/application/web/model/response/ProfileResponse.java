@@ -28,6 +28,10 @@ public class ProfileResponse {
     return this.image;
   }
 
+  public boolean isFollowing() {
+    return this.following;
+  }
+
   public void setUsername(final String username) {
     this.username = username;
   }

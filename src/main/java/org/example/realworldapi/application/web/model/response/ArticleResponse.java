@@ -55,6 +55,10 @@ public class ArticleResponse {
     return this.body;
   }
 
+  public List<String> getTagList() {
+    return this.tagList;
+  }
+
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
@@ -65,6 +69,14 @@ public class ArticleResponse {
 
   public ProfileResponse getAuthor() {
     return this.author;
+  }
+
+  public boolean isFavorited() {
+    return this.favorited;
+  }
+
+  public long getFavoritesCount() {
+    return this.favoritesCount;
   }
 
   public void setSlug(final String slug) {
