@@ -37,5 +37,4 @@ public class UpdateArticleRequest {
   public void setBody(final String body) {
     this.body = body;
   }
-
 }

@@ -14,16 +14,16 @@ public class ArticleResponse {
   private String title;
   private String description;
   private String body;
-  private List<String> tagList;
+  private final List<String> tagList;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime createdAt;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime updatedAt;
 
   private boolean favorited;
-  private long favoritesCount;
+  private final long favoritesCount;
   private ProfileResponse author;
 
   public ArticleResponse(

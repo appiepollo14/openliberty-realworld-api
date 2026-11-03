@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class FollowRelationship {
   private User user;
-  private User followed;
+  private final User followed;
 
   public User getUser() {
     return this.user;
@@ -21,7 +21,8 @@ public class FollowRelationship {
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof FollowRelationship that)) return false;
-      return Objects.equals(getUser(), that.getUser()) && Objects.equals(getFollowed(), that.getFollowed());
+    return Objects.equals(getUser(), that.getUser())
+        && Objects.equals(getFollowed(), that.getFollowed());
   }
 
   @Override

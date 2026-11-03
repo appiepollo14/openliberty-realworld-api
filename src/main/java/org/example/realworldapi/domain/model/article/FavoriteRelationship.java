@@ -26,7 +26,8 @@ public class FavoriteRelationship {
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof FavoriteRelationship that)) return false;
-      return Objects.equals(getUser(), that.getUser()) && Objects.equals(getArticle(), that.getArticle());
+    return Objects.equals(getUser(), that.getUser())
+        && Objects.equals(getArticle(), that.getArticle());
   }
 
   @Override

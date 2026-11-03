@@ -44,12 +44,18 @@ public class Comment {
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
     Comment comment = (Comment) o;
-    return Objects.equals(getId(), comment.getId()) && Objects.equals(getAuthor(), comment.getAuthor()) && Objects.equals(getArticle(), comment.getArticle()) && Objects.equals(getBody(), comment.getBody()) && Objects.equals(getCreatedAt(), comment.getCreatedAt()) && Objects.equals(getUpdatedAt(), comment.getUpdatedAt());
+    return Objects.equals(getId(), comment.getId())
+        && Objects.equals(getAuthor(), comment.getAuthor())
+        && Objects.equals(getArticle(), comment.getArticle())
+        && Objects.equals(getBody(), comment.getBody())
+        && Objects.equals(getCreatedAt(), comment.getCreatedAt())
+        && Objects.equals(getUpdatedAt(), comment.getUpdatedAt());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getAuthor(), getArticle(), getBody(), getCreatedAt(), getUpdatedAt());
+    return Objects.hash(
+        getId(), getAuthor(), getArticle(), getBody(), getCreatedAt(), getUpdatedAt());
   }
 
   @Override
