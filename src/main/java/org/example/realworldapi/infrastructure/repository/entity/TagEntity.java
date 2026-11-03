@@ -3,15 +3,9 @@ package org.example.realworldapi.infrastructure.repository.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.tag.Tag;
 
-@Getter
-@Setter
 @Entity
-@NoArgsConstructor
 @Table(name = "TAGS")
 @NamedQueries({
   @NamedQuery(
@@ -19,7 +13,6 @@ import org.example.realworldapi.domain.model.tag.Tag;
       query = "select t from TagEntity t where upper(t.name) in :names")
 })
 public class TagEntity {
-
   @Id
   @Column(columnDefinition = "uuid")
   private UUID id;
@@ -33,4 +26,22 @@ public class TagEntity {
     this.id = tag.getId();
     this.name = tag.getName();
   }
+
+  public UUID getId() {
+    return this.id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  public TagEntity() {}
 }

@@ -3,14 +3,9 @@ package org.example.realworldapi.application.web.model.response;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import java.util.LinkedList;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @JsonRootName("errors")
 public class ErrorResponse {
-
   private List<String> body;
 
   public ErrorResponse() {
@@ -24,5 +19,13 @@ public class ErrorResponse {
 
   public ErrorResponse(List<String> errors) {
     this.body = errors;
+  }
+
+  public List<String> getBody() {
+    return this.body;
+  }
+
+  public void setBody(final List<String> body) {
+    this.body = body;
   }
 }

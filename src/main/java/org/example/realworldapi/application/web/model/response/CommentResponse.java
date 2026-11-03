@@ -4,23 +4,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.comment.Comment;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @JsonRootName("comment")
 public class CommentResponse {
-
   private UUID id;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'")
   private LocalDateTime createdAt;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'")
   private LocalDateTime updatedAt;
 
   private String body;
@@ -31,6 +24,46 @@ public class CommentResponse {
     this.createdAt = comment.getCreatedAt();
     this.updatedAt = comment.getUpdatedAt();
     this.body = comment.getBody();
+    this.author = author;
+  }
+
+  public UUID getId() {
+    return this.id;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public ProfileResponse getAuthor() {
+    return this.author;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  public void setCreatedAt(final LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(final LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setBody(final String body) {
+    this.body = body;
+  }
+
+  public void setAuthor(final ProfileResponse author) {
     this.author = author;
   }
 }

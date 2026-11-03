@@ -5,18 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.article.Article;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "ARTICLES")
 @NamedQueries({
@@ -26,7 +18,6 @@ import org.hibernate.annotations.UpdateTimestamp;
           "select a from ArticleEntity a where upper(a.slug) = :slug and a.author.id = :authorId")
 })
 public class ArticleEntity {
-
   @Id
   @Column(nullable = false, columnDefinition = "uuid")
   private UUID id;
@@ -69,9 +60,7 @@ public class ArticleEntity {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-
     if (o == null || getClass() != o.getClass()) return false;
-
     ArticleEntity that = (ArticleEntity) o;
     return Objects.equals(id, that.id);
   }
@@ -80,4 +69,119 @@ public class ArticleEntity {
   public int hashCode() {
     return Objects.hash(id);
   }
+
+  public UUID getId() {
+    return this.id;
+  }
+
+  public String getSlug() {
+    return this.slug;
+  }
+
+  public String getTitle() {
+    return this.title;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public UserEntity getAuthor() {
+    return this.author;
+  }
+
+  public List<CommentEntity> getComments() {
+    return this.comments;
+  }
+
+  public List<TagRelationshipEntity> getTags() {
+    return this.tags;
+  }
+
+  public List<FavoriteRelationshipEntity> getFavorites() {
+    return this.favorites;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  public void setSlug(final String slug) {
+    this.slug = slug;
+  }
+
+  public void setTitle(final String title) {
+    this.title = title;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
+  }
+
+  public void setBody(final String body) {
+    this.body = body;
+  }
+
+  public void setCreatedAt(final LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(final LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setAuthor(final UserEntity author) {
+    this.author = author;
+  }
+
+  public void setComments(final List<CommentEntity> comments) {
+    this.comments = comments;
+  }
+
+  public void setTags(final List<TagRelationshipEntity> tags) {
+    this.tags = tags;
+  }
+
+  public void setFavorites(final List<FavoriteRelationshipEntity> favorites) {
+    this.favorites = favorites;
+  }
+
+  public ArticleEntity(
+      final UUID id,
+      final String slug,
+      final String title,
+      final String description,
+      final String body,
+      final LocalDateTime createdAt,
+      final LocalDateTime updatedAt,
+      final UserEntity author,
+      final List<CommentEntity> comments,
+      final List<TagRelationshipEntity> tags,
+      final List<FavoriteRelationshipEntity> favorites) {
+    this.id = id;
+    this.slug = slug;
+    this.title = title;
+    this.description = description;
+    this.body = body;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.author = author;
+    this.comments = comments;
+    this.tags = tags;
+    this.favorites = favorites;
+  }
+
+  public ArticleEntity() {}
 }

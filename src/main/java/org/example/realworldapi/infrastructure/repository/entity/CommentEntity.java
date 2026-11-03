@@ -3,17 +3,11 @@ package org.example.realworldapi.infrastructure.repository.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.comment.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
 @Entity
-@NoArgsConstructor
 @Table(name = "COMMENTS")
 @NamedQueries({
   @NamedQuery(
@@ -24,14 +18,12 @@ import org.hibernate.annotations.UpdateTimestamp;
       query = "select c from CommentEntity c where c.id = :commentId and c.author.id = :authorId")
 })
 public class CommentEntity {
-
   @Id
   @Column(nullable = false, columnDefinition = "uuid")
   private UUID id;
 
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;
-
   private String body;
 
   @ManyToOne
@@ -50,4 +42,54 @@ public class CommentEntity {
     this.article = article;
     this.author = author;
   }
+
+  public UUID getId() {
+    return this.id;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public ArticleEntity getArticle() {
+    return this.article;
+  }
+
+  public UserEntity getAuthor() {
+    return this.author;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  public void setCreatedAt(final LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(final LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setBody(final String body) {
+    this.body = body;
+  }
+
+  public void setArticle(final ArticleEntity article) {
+    this.article = article;
+  }
+
+  public void setAuthor(final UserEntity author) {
+    this.author = author;
+  }
+
+  public CommentEntity() {}
 }
