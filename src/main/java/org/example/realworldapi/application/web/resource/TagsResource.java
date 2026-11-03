@@ -20,6 +20,8 @@ public class TagsResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTags() {
     List<Tag> tags = findTags.handle();
-    return Response.ok(new TagsResponse(tags)).status(Response.Status.OK).build();
+    return Response.ok(new TagsResponse(tags.stream().map(Tag::getName).toList()))
+        .status(Response.Status.OK)
+        .build();
   }
 }

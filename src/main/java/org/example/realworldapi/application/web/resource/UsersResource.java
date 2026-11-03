@@ -38,7 +38,7 @@ public class UsersResource {
   public Response create(
       @Valid NewUserRequestWrapper newUserRequest, @Context SecurityException context)
       throws JsonProcessingException {
-    final var user = createUser.handle(newUserRequest.getUser().toCreateUserInput());
+    final var user = createUser.handle(newUserRequest.user().toCreateUserInput());
     final var token = tokenProvider.createUserToken(user.getId().toString());
     return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token)))
         .status(Response.Status.CREATED)
@@ -53,7 +53,7 @@ public class UsersResource {
     User user;
 
     try {
-      user = loginUser.handle(loginRequest.getUser().toLoginUserInput());
+      user = loginUser.handle(loginRequest.user().toLoginUserInput());
     } catch (UserNotFoundException | InvalidPasswordException ex) {
       throw new UnauthorizedException();
     }

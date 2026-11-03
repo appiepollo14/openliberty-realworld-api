@@ -48,7 +48,7 @@ public class UserResource {
       @Context SecurityContext securityContext, @Valid UpdateUserRequestWrapper updateUserRequest)
       throws JsonProcessingException {
     final var userId = UUID.fromString(securityContext.getUserPrincipal().getName());
-    final var user = updateUser.handle(updateUserRequest.getUser().toUpdateUserInput(userId));
+    final var user = updateUser.handle(updateUserRequest.user().toUpdateUserInput(userId));
     final var token = tokenProvider.createUserToken(user.getId().toString());
     return Response.ok(objectMapper.writeValueAsString(new UserResponse(user, token)))
         .status(Response.Status.OK)

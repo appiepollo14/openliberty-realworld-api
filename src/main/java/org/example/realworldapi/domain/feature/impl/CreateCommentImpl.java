@@ -20,9 +20,9 @@ public class CreateCommentImpl implements CreateComment {
 
   @Override
   public Comment handle(NewCommentInput newCommentInput) {
-    final var author = findUserById.handle(newCommentInput.getAuthorId());
-    final var article = findArticleBySlug.handle(newCommentInput.getArticleSlug());
-    final var comment = commentBuilder.build(author, article, newCommentInput.getBody());
+    final var author = findUserById.handle(newCommentInput.authorId());
+    final var article = findArticleBySlug.handle(newCommentInput.articleSlug());
+    final var comment = commentBuilder.build(author, article, newCommentInput.body());
     commentRepository.save(comment);
     return comment;
   }

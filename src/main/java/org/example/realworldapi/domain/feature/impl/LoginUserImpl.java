@@ -19,10 +19,8 @@ public class LoginUserImpl implements LoginUser {
   @Override
   public User handle(LoginUserInput loginUserInput) {
     final var user =
-        userRepository
-            .findByEmail(loginUserInput.getEmail())
-            .orElseThrow(UserNotFoundException::new);
-    if (!isPasswordValid(loginUserInput.getPassword(), user.getPassword())) {
+        userRepository.findByEmail(loginUserInput.email()).orElseThrow(UserNotFoundException::new);
+    if (!isPasswordValid(loginUserInput.password(), user.getPassword())) {
       throw new InvalidPasswordException();
     }
     return user;
