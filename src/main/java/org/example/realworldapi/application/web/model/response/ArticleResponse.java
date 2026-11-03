@@ -1,6 +1,7 @@
 package org.example.realworldapi.application.web.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,8 @@ public class ArticleResponse {
   private String slug;
   private String title;
   private String description;
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String body;
   private final List<String> tagList;
 

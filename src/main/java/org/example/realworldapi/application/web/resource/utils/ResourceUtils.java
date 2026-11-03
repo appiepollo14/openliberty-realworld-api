@@ -46,10 +46,15 @@ public class ResourceUtils {
 
   public ArticlesResponse articlesResponse(PageResult<Article> pageResult, UUID loggedUserId) {
     final var resultResponse =
-        pageResult.result().stream()
-            .map(article -> articleResponse(article, loggedUserId))
+        pageResult.getResult().stream()
+            .map(
+                article -> {
+                  final var response = articleResponse(article, loggedUserId);
+                  response.setBody(null);
+                  return response;
+                })
             .collect(Collectors.toList());
-    return new ArticlesResponse(resultResponse, pageResult.total());
+    return new ArticlesResponse(resultResponse, pageResult.getTotal());
   }
 
   public CommentResponse commentResponse(Comment comment, UUID loggedUserId) {
