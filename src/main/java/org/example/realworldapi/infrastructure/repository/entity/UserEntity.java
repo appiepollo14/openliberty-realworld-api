@@ -3,18 +3,11 @@ package org.example.realworldapi.infrastructure.repository.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.user.User;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "USERS")
 public class UserEntity {
-
   @Id
   @Column(nullable = false, columnDefinition = "uuid")
   private UUID id;
@@ -46,4 +39,54 @@ public class UserEntity {
     this.password = user.getPassword();
     this.email = user.getEmail();
   }
+
+  public UUID getId() {
+    return this.id;
+  }
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public String getBio() {
+    return this.bio;
+  }
+
+  public String getImage() {
+    return this.image;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  public void setUsername(final String username) {
+    this.username = username;
+  }
+
+  public void setBio(final String bio) {
+    this.bio = bio;
+  }
+
+  public void setImage(final String image) {
+    this.image = image;
+  }
+
+  public void setPassword(final String password) {
+    this.password = password;
+  }
+
+  public void setEmail(final String email) {
+    this.email = email;
+  }
+
+  public UserEntity() {}
 }

@@ -97,7 +97,7 @@ public class ArticlesResource {
       throws JsonProcessingException {
     final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
     final var article =
-        createArticle.handle(newArticleRequest.getArticle().toNewArticleInput(loggedUserId));
+        createArticle.handle(newArticleRequest.article().toNewArticleInput(loggedUserId));
     return Response.ok(
             objectMapper.writeValueAsString(resourceUtils.articleResponse(article, loggedUserId)))
         .status(Response.Status.CREATED)
@@ -131,7 +131,7 @@ public class ArticlesResource {
     final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
     final var updatedArticle =
         updateArticleBySlug.handle(
-            updateArticleRequest.getArticle().toUpdateArticleInput(loggedUserId, slug));
+            updateArticleRequest.article().toUpdateArticleInput(loggedUserId, slug));
     return Response.ok(
             objectMapper.writeValueAsString(resourceUtils.articleResponse(updatedArticle, null)))
         .status(Response.Status.OK)
@@ -181,7 +181,7 @@ public class ArticlesResource {
       throws JsonProcessingException {
     final var loggedUserId = resourceUtils.getLoggedUserId(securityContext);
     final var comment =
-        createComment.handle(newCommentRequest.getComment().toNewCommentInput(loggedUserId, slug));
+        createComment.handle(newCommentRequest.comment().toNewCommentInput(loggedUserId, slug));
     return Response.ok(
             objectMapper.writeValueAsString(resourceUtils.commentResponse(comment, loggedUserId)))
         .status(Response.Status.OK)

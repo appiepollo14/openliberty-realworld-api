@@ -9,7 +9,7 @@ import org.testcontainers.junit.jupiter.Container;
 public class AppDeploymentConfig implements SharedContainerConfiguration {
 
   // renovate: datasource=docker depName=postgres
-  static String postgresVersion = "17.3";
+  static String postgresVersion = "18.6";
 
   @Container
   public static PostgreSQLContainer<?> postgres =

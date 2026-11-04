@@ -2,14 +2,9 @@ package org.example.realworldapi.application.web.model.request;
 
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.article.NewArticleInput;
 
-@Getter
-@Setter
 public class NewArticleRequest {
-
   private String title;
   private String description;
   private String body;
@@ -17,5 +12,33 @@ public class NewArticleRequest {
 
   public NewArticleInput toNewArticleInput(UUID loggedUserId) {
     return new NewArticleInput(loggedUserId, this.title, this.description, this.body, this.tagList);
+  }
+
+  public String getTitle() {
+    return this.title;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public void setTitle(final String title) {
+    this.title = title;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
+  }
+
+  public void setBody(final String body) {
+    this.body = body;
+  }
+
+  public void setTagList(final List<String> tagList) {
+    this.tagList = tagList;
   }
 }

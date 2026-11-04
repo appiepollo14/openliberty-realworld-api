@@ -5,23 +5,16 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.article.Article;
 import org.example.realworldapi.domain.model.tag.Tag;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @JsonRootName("article")
 public class ArticleResponse {
-
   private String slug;
   private String title;
   private String description;
   private String body;
-  private List<String> tagList;
+  private final List<String> tagList;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime createdAt;
@@ -30,7 +23,7 @@ public class ArticleResponse {
   private LocalDateTime updatedAt;
 
   private boolean favorited;
-  private long favoritesCount;
+  private final long favoritesCount;
   private ProfileResponse author;
 
   public ArticleResponse(
@@ -44,5 +37,77 @@ public class ArticleResponse {
     this.author = author;
     this.favoritesCount = favoritesCount;
     this.tagList = tags.stream().map(Tag::getName).collect(Collectors.toList());
+  }
+
+  public String getSlug() {
+    return this.slug;
+  }
+
+  public String getTitle() {
+    return this.title;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public List<String> getTagList() {
+    return this.tagList;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public ProfileResponse getAuthor() {
+    return this.author;
+  }
+
+  public boolean isFavorited() {
+    return this.favorited;
+  }
+
+  public long getFavoritesCount() {
+    return this.favoritesCount;
+  }
+
+  public void setSlug(final String slug) {
+    this.slug = slug;
+  }
+
+  public void setTitle(final String title) {
+    this.title = title;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
+  }
+
+  public void setBody(final String body) {
+    this.body = body;
+  }
+
+  public void setCreatedAt(final LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(final LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setFavorited(final boolean favorited) {
+    this.favorited = favorited;
+  }
+
+  public void setAuthor(final ProfileResponse author) {
+    this.author = author;
   }
 }

@@ -22,19 +22,19 @@ public class CreateArticleImpl implements CreateArticle {
 
   @Override
   public Article handle(NewArticleInput newArticleInput) {
-    final var author = findUserById.handle(newArticleInput.getAuthorId());
-    final var slug = createSlugByTitle.handle(newArticleInput.getTitle());
+    final var author = findUserById.handle(newArticleInput.authorId());
+    final var slug = createSlugByTitle.handle(newArticleInput.title());
     final var article =
         articleBuilder.build(
             slug,
-            newArticleInput.getTitle(),
-            newArticleInput.getDescription(),
-            newArticleInput.getBody(),
+            newArticleInput.title(),
+            newArticleInput.description(),
+            newArticleInput.body(),
             author);
     articleRepository.save(article);
-    List<String> tagList = newArticleInput.getTagList();
+    List<String> tagList = newArticleInput.tagList();
     if (tagList != null && !tagList.isEmpty()) {
-      final List<Tag> tags = findTagsByNameCreateIfNotExists.handle(newArticleInput.getTagList());
+      final List<Tag> tags = findTagsByNameCreateIfNotExists.handle(newArticleInput.tagList());
       createTagRelationship(article, tags);
     }
     return article;

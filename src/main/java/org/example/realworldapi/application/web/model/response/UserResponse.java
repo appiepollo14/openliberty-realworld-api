@@ -1,17 +1,10 @@
 package org.example.realworldapi.application.web.model.response;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.realworldapi.domain.model.user.User;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @JsonRootName("user")
 public class UserResponse {
-
   private String username;
   private String bio;
   private String image;
@@ -23,6 +16,46 @@ public class UserResponse {
     this.bio = user.getBio();
     this.image = user.getImage();
     this.email = user.getEmail();
+    this.token = token;
+  }
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public String getBio() {
+    return this.bio;
+  }
+
+  public String getImage() {
+    return this.image;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public String getToken() {
+    return this.token;
+  }
+
+  public void setUsername(final String username) {
+    this.username = username;
+  }
+
+  public void setBio(final String bio) {
+    this.bio = bio;
+  }
+
+  public void setImage(final String image) {
+    this.image = image;
+  }
+
+  public void setEmail(final String email) {
+    this.email = email;
+  }
+
+  public void setToken(final String token) {
     this.token = token;
   }
 }

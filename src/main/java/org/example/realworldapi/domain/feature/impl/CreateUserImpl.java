@@ -22,9 +22,7 @@ public class CreateUserImpl implements CreateUser {
   public User handle(CreateUserInput createUserInput) {
     final var user =
         userBuilder.build(
-            createUserInput.getUsername(),
-            createUserInput.getEmail(),
-            createUserInput.getPassword());
+            createUserInput.username(), createUserInput.email(), createUserInput.password());
     checkExistingUsername(user.getUsername());
     checkExistingEmail(user.getEmail());
     user.setPassword(hashProvider.hashPassword(user.getPassword()));

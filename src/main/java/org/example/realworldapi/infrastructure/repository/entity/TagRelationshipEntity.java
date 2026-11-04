@@ -2,17 +2,10 @@ package org.example.realworldapi.infrastructure.repository.entity;
 
 import jakarta.persistence.*;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "TAG_RELATIONSHIP")
 public class TagRelationshipEntity {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -33,9 +26,7 @@ public class TagRelationshipEntity {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-
     if (o == null || getClass() != o.getClass()) return false;
-
     TagRelationshipEntity that = (TagRelationshipEntity) o;
     return Objects.equals(article, that.article) && Objects.equals(tag, that.tag);
   }
@@ -44,4 +35,30 @@ public class TagRelationshipEntity {
   public int hashCode() {
     return Objects.hash(article, tag);
   }
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public ArticleEntity getArticle() {
+    return this.article;
+  }
+
+  public TagEntity getTag() {
+    return this.tag;
+  }
+
+  public void setId(final Long id) {
+    this.id = id;
+  }
+
+  public void setArticle(final ArticleEntity article) {
+    this.article = article;
+  }
+
+  public void setTag(final TagEntity tag) {
+    this.tag = tag;
+  }
+
+  public TagRelationshipEntity() {}
 }

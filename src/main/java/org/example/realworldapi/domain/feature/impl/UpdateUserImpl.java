@@ -21,39 +21,39 @@ public class UpdateUserImpl implements UpdateUser {
 
   @Override
   public User handle(UpdateUserInput updateUserInput) {
-    final var user = findUserById.handle(updateUserInput.getId());
-    checkValidations(updateUserInput, updateUserInput.getId());
+    final var user = findUserById.handle(updateUserInput.id());
+    checkValidations(updateUserInput, updateUserInput.id());
     updateFields(user, updateUserInput);
     userRepository.update(modelValidator.validate(user));
     return user;
   }
 
   private void updateFields(User user, UpdateUserInput updateUserInput) {
-    if (isPresent(updateUserInput.getUsername())) {
-      user.setUsername(updateUserInput.getUsername());
+    if (isPresent(updateUserInput.username())) {
+      user.setUsername(updateUserInput.username());
     }
 
-    if (isPresent(updateUserInput.getEmail())) {
-      user.setEmail(updateUserInput.getEmail());
+    if (isPresent(updateUserInput.email())) {
+      user.setEmail(updateUserInput.email());
     }
 
-    if (isPresent(updateUserInput.getBio())) {
-      user.setBio(updateUserInput.getBio());
+    if (isPresent(updateUserInput.bio())) {
+      user.setBio(updateUserInput.bio());
     }
 
-    if (isPresent(updateUserInput.getImage())) {
-      user.setImage(updateUserInput.getImage());
+    if (isPresent(updateUserInput.image())) {
+      user.setImage(updateUserInput.image());
     }
   }
 
   private void checkValidations(UpdateUserInput updateUserInput, UUID excludeId) {
 
-    if (isPresent(updateUserInput.getUsername())) {
-      checkUsername(excludeId, updateUserInput.getUsername());
+    if (isPresent(updateUserInput.username())) {
+      checkUsername(excludeId, updateUserInput.username());
     }
 
-    if (isPresent(updateUserInput.getEmail())) {
-      checkEmail(excludeId, updateUserInput.getEmail());
+    if (isPresent(updateUserInput.email())) {
+      checkEmail(excludeId, updateUserInput.email());
     }
   }
 
