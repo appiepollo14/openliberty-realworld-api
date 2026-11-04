@@ -22,10 +22,9 @@ public class BeanValidationExceptionMapper
 
     e.getConstraintViolations()
         .iterator()
-        .forEachRemaining(
-            contraint -> {
-              errorResponse.getBody().add(contraint.getMessage());
-            });
+        .forEachRemaining(contraint -> {
+          errorResponse.getBody().add(contraint.getMessage());
+        });
 
     try {
       return Response.ok(objectMapper.writeValueAsString(errorResponse)).status(422).build();
