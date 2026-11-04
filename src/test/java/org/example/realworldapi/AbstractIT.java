@@ -57,12 +57,11 @@ public class AbstractIT extends DatabaseIT {
 
   protected UserEntity createUserEntity(
       String username, String email, String bio, String image, String password) {
-    return transaction(
-        () -> {
-          final var userEntity = UserEntityUtils.create(username, email, password, bio, image);
-          entityManager.persist(userEntity);
-          return userEntity;
-        });
+    return transaction(() -> {
+      final var userEntity = UserEntityUtils.create(username, email, password, bio, image);
+      entityManager.persist(userEntity);
+      return userEntity;
+    });
   }
 
   protected String token(UserEntity userEntity) {
@@ -71,56 +70,53 @@ public class AbstractIT extends DatabaseIT {
 
   protected void follow(UserEntity currentUser, UserEntity... followers) {
 
-    transaction(
-        () -> {
-          final var user = entityManager.find(UserEntity.class, currentUser.getId());
+    transaction(() -> {
+      final var user = entityManager.find(UserEntity.class, currentUser.getId());
 
-          for (UserEntity follower : followers) {
-            FollowRelationshipEntity followRelationshipEntity = new FollowRelationshipEntity();
-            followRelationshipEntity.setFollowed(follower);
-            followRelationshipEntity.setUser(user);
-            entityManager.persist(followRelationshipEntity);
-          }
+      for (UserEntity follower : followers) {
+        FollowRelationshipEntity followRelationshipEntity = new FollowRelationshipEntity();
+        followRelationshipEntity.setFollowed(follower);
+        followRelationshipEntity.setUser(user);
+        entityManager.persist(followRelationshipEntity);
+      }
 
-          entityManager.persist(user);
-        });
+      entityManager.persist(user);
+    });
   }
 
   protected TagEntity createTagEntity(String name) {
-    return transaction(
-        () -> {
-          final var tag = new TagEntity();
-          tag.setId(UUID.randomUUID());
-          tag.setName(name);
-          entityManager.persist(tag);
-          return tag;
-        });
+    return transaction(() -> {
+      final var tag = new TagEntity();
+      tag.setId(UUID.randomUUID());
+      tag.setName(name);
+      entityManager.persist(tag);
+      return tag;
+    });
   }
 
   protected List<TagRelationshipEntity> createArticlesTags(
       List<ArticleEntity> articles, TagEntity... tags) {
-    return transaction(
-        () -> {
-          final var resultList = new LinkedList<TagRelationshipEntity>();
+    return transaction(() -> {
+      final var resultList = new LinkedList<TagRelationshipEntity>();
 
-          for (ArticleEntity article : articles) {
+      for (ArticleEntity article : articles) {
 
-            final var managedArticle = entityManager.find(ArticleEntity.class, article.getId());
+        final var managedArticle = entityManager.find(ArticleEntity.class, article.getId());
 
-            for (TagEntity tag : tags) {
-              final var managedTag = entityManager.find(TagEntity.class, tag.getId());
+        for (TagEntity tag : tags) {
+          final var managedTag = entityManager.find(TagEntity.class, tag.getId());
 
-              final var articlesTagsEntity = new TagRelationshipEntity();
-              articlesTagsEntity.setArticle(managedArticle);
-              articlesTagsEntity.setTag(managedTag);
+          final var articlesTagsEntity = new TagRelationshipEntity();
+          articlesTagsEntity.setArticle(managedArticle);
+          articlesTagsEntity.setTag(managedTag);
 
-              entityManager.persist(articlesTagsEntity);
-              resultList.add(articlesTagsEntity);
-            }
-          }
+          entityManager.persist(articlesTagsEntity);
+          resultList.add(articlesTagsEntity);
+        }
+      }
 
-          return resultList;
-        });
+      return resultList;
+    });
   }
 
   protected List<ArticleEntity> createArticles(
@@ -139,18 +135,17 @@ public class AbstractIT extends DatabaseIT {
 
   protected ArticleEntity createArticleEntity(
       UserEntity author, String title, String description, String body) {
-    return transaction(
-        () -> {
-          final var article = new ArticleEntity();
-          article.setId(UUID.randomUUID());
-          article.setTitle(title);
-          article.setSlug(slugify.slugify(title));
-          article.setDescription(description);
-          article.setBody(body);
-          article.setAuthor(author);
-          entityManager.persist(article);
-          return article;
-        });
+    return transaction(() -> {
+      final var article = new ArticleEntity();
+      article.setId(UUID.randomUUID());
+      article.setTitle(title);
+      article.setSlug(slugify.slugify(title));
+      article.setDescription(description);
+      article.setBody(body);
+      article.setAuthor(author);
+      entityManager.persist(article);
+      return article;
+    });
   }
 
   protected ArticleEntity findArticleEntityById(UUID id) {
@@ -162,25 +157,23 @@ public class AbstractIT extends DatabaseIT {
   }
 
   protected FavoriteRelationshipEntity favorite(ArticleEntity article, UserEntity user) {
-    return transaction(
-        () -> {
-          final var favoriteRelationshipEntity = favoriteRelationshipEntity(article, user);
-          entityManager.persist(favoriteRelationshipEntity);
-          return favoriteRelationshipEntity;
-        });
+    return transaction(() -> {
+      final var favoriteRelationshipEntity = favoriteRelationshipEntity(article, user);
+      entityManager.persist(favoriteRelationshipEntity);
+      return favoriteRelationshipEntity;
+    });
   }
 
   protected CommentEntity createComment(UserEntity author, ArticleEntity article, String body) {
-    return transaction(
-        () -> {
-          final var comment = new CommentEntity();
-          comment.setId(UUID.randomUUID());
-          comment.setBody(body);
-          comment.setArticle(article);
-          comment.setAuthor(author);
-          entityManager.persist(comment);
-          return comment;
-        });
+    return transaction(() -> {
+      final var comment = new CommentEntity();
+      comment.setId(UUID.randomUUID());
+      comment.setBody(body);
+      comment.setArticle(article);
+      comment.setAuthor(author);
+      entityManager.persist(comment);
+      return comment;
+    });
   }
 
   private FavoriteRelationshipEntity favoriteRelationshipEntity(

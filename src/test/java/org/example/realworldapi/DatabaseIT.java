@@ -67,13 +67,11 @@ public class DatabaseIT extends AppDeploymentConfig {
   }
 
   public void clear() {
-    transaction(
-        () ->
-            entities.forEach(
-                tableName ->
-                    entityManager
-                        .createNativeQuery("TRUNCATE TABLE " + tableName + " CASCADE;")
-                        .executeUpdate()));
+    transaction(() ->
+        entities.forEach(tableName ->
+            entityManager
+                .createNativeQuery("TRUNCATE TABLE " + tableName + " CASCADE;")
+                .executeUpdate()));
   }
 
   private static DataSource dataSource() {
@@ -88,12 +86,11 @@ public class DatabaseIT extends AppDeploymentConfig {
     Reflections reflections = new Reflections(packageToScan);
     reflections
         .getTypesAnnotatedWith(Entity.class)
-        .forEach(
-            entity -> {
-              String tableName = entity.getAnnotation(Table.class).name();
-              entities.add(tableName);
-              configuration.addAnnotatedClass(entity);
-            });
+        .forEach(entity -> {
+          String tableName = entity.getAnnotation(Table.class).name();
+          entities.add(tableName);
+          configuration.addAnnotatedClass(entity);
+        });
   }
 
   public void transaction(Runnable command) {
