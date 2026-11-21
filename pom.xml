@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>9.1.6.Final</version>
+            <version>9.2.0.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.glassfish.expressly/expressly -->
         <dependency>
@@ -149,7 +149,7 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.0</version>
                 <configuration>
                     <java>
                         <googleJavaFormat/>
